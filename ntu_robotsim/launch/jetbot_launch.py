@@ -107,19 +107,14 @@ def generate_launch_description() -> LaunchDescription:
     #    Input:  /camera/color/image_raw
     #    Output: /detections (yolo_msgs/DetectionArray)
     yolo_node = TimerAction(
-        period=3.0,
-        actions=[
-            Node(
-                package='yolo_ros',
-                executable='yolo_node',
-                name='yolo_detector',
-                output='screen',
-                parameters=[{
-                    'model':             LaunchConfiguration('yolo_model'),
-                    'device':            LaunchConfiguration('yolo_device'),
-                    'threshold':         LaunchConfiguration('yolo_threshold'),
-                    'input_image_topic': '/camera/color/image_raw',
-                }],
+    period=3.0,
+    actions=[
+        ExecuteProcess(
+            cmd=[
+                'python3',
+                os.path.join(LAUNCH_DIR, 'jetbot_yolo_node.py'),
+            ],
+            output='screen',
             )
         ],
     )
